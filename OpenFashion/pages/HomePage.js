@@ -1,23 +1,61 @@
 import React from 'react';
-import { View, Text , StyleSheet, SafeAreaView} from 'react-native';
-
+import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
 
 const HomePage = () => {
+    const data = [
+        { id: '1', image: require('../assets/dress1.png') },
+        { id: '2', image: require('../assets/dress2.png') },
+        { id: '3', image: require('../assets/dress3.png') },
+        { id: '4', image: require('../assets/dress4.png') },
+        { id: '5', image: require('../assets/dress5.png') },
+        { id: '6', image: require('../assets/dress6.png') },
+        { id: '7', image: require('../assets/dress7.png') },
+        { id: '8', image: require('../assets/dress3.png') },
+    ];
+
+    const renderItem = ({ item }) => (
+        <View style={styles.card}>
+            <Image source={item.image} style={styles.cardImage} />
+            <TouchableOpacity style={styles.button}>
+                <Image source={require('../assets/add_circle.png')} style={styles.overlayImage} />
+            </TouchableOpacity>
+        </View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.Navbar}>
-                <Image source={require('../')} />
-
+                <Image source={require('../assets/Menu.png')} />
+                <Image source={require('../assets/Logo.png')} />
+                <View style={styles.flex}>
+                    <Image source={require('../assets/Search.png')} />
+                    <Image source={require('../assets/shoppingBag.png')} />
+                </View>
             </View>
 
             <View style={styles.Header}>
-
+                <Text style={styles.headerText}>OUR STORY</Text>
+                <View style={styles.circle}>
+                    <TouchableOpacity>
+                        <Image source={require('../assets/Listview.png')} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.circle2}>
+                    <TouchableOpacity>
+                        <Image source={require('../assets/Filter.png')} />
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            <View style={styles.Layout}>
-            <View style={styles.Card}></View>
-            </View>
-            
+            <FlatList
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.column}
+                contentContainerStyle={styles.layout}
+                showsVerticalScrollIndicator={false}
+            />
         </SafeAreaView>
     );
 };
@@ -25,12 +63,66 @@ const HomePage = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        margin: 20,
     },
-    Navbar:{
-        flexDirection: "row"
-
-    }
+    Navbar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    flex: {
+        flexDirection: 'row',
+    },
+    Header: {
+        marginTop: 20,
+        flexDirection: 'row',
+    },
+    headerText: {
+        fontSize: 32,
+        fontWeight: '600',
+    },
+    circle: {
+        width: 30,
+        height: 30,
+        borderRadius: 20,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 'auto',
+    },
+    circle2: {
+        width: 30,
+        height: 30,
+        borderRadius: 20,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 14,
+    },
+    layout: {
+        marginTop: 20,
+    },
+    column: {
+        justifyContent: 'space-between',
+    },
+    card: {
+        position: 'relative',
+        width: '48%',
+        marginBottom: 20,
+    },
+    cardImage: {
+        width: '100%',
+        height: 200,
+    },
+    button: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+    },
+    overlayImage: {
+        width: 30,
+        height: 30,
+    },
 });
 
 export default HomePage;
