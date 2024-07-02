@@ -1,26 +1,43 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
 
-const HomePage = () => {
+const HomePage = ({ navigation, cart, setCart }) => {
     const data = [
-        { id: '1', image: require('../assets/dress1.png') },
-        { id: '2', image: require('../assets/dress2.png') },
-        { id: '3', image: require('../assets/dress3.png') },
-        { id: '4', image: require('../assets/dress4.png') },
-        { id: '5', image: require('../assets/dress5.png') },
-        { id: '6', image: require('../assets/dress6.png') },
-        { id: '7', image: require('../assets/dress7.png') },
-        { id: '8', image: require('../assets/dress3.png') },
+        { id: '1', image: require('../assets/dress1.png'), title: 'Office Wear', description: 'reversible angora cardigan', price: '$120' },
+        { id: '2', image: require('../assets/dress2.png'), title: 'Black', description: 'reversible angora cardigan', price: '$120' },
+        { id: '3', image: require('../assets/dress3.png'), title: 'Church Wear', description: 'reversible angora cardigan', price: '$120' },
+        { id: '4', image: require('../assets/dress4.png'), title: 'Lamerei', description: 'reversible angora cardigan', price: '$120' },
+        { id: '5', image: require('../assets/dress5.png'), title: '21WN', description: 'reversible angora cardigan', price: '$120' },
+        { id: '6', image: require('../assets/dress6.png'), title: 'Lopo', description: 'reversible angora cardigan', price: '$120' },
+        { id: '7', image: require('../assets/dress7.png'), title: '21WN', description: 'reversible angora cardigan', price: '$120' },
+        { id: '8', image: require('../assets/dress3.png'), title: 'lame', description: 'reversible angora cardigan', price: '$120' },
     ];
 
-    const renderItem = ({ item }) => (
-        <View style={styles.card}>
-            <Image source={item.image} style={styles.cardImage} />
-            <TouchableOpacity style={styles.button}>
-                <Image source={require('../assets/add_circle.png')} style={styles.overlayImage} />
-            </TouchableOpacity>
-        </View>
-    );
+    const addToCart = (item) => {
+        setCart([...cart, item]);
+    };
+
+    const renderItem = ({ item }) => {
+        return (
+            <View style={styles.card}>
+                <Image source={item.image} style={styles.cardImage} />
+                <View style={styles.textContainer}>
+                    <Text style={styles.titleText}>{item.title}</Text>
+                    <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.priceText}>{item.price}</Text>
+                </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => addToCart(item)}
+                >
+                    <Image 
+                        source={require('../assets/add_circle.png')} 
+                        style={styles.overlayImage} 
+                    />
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -29,7 +46,9 @@ const HomePage = () => {
                 <Image source={require('../assets/Logo.png')} />
                 <View style={styles.flex}>
                     <Image source={require('../assets/Search.png')} />
-                    <Image source={require('../assets/shoppingBag.png')} />
+                    <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
+                        <Image source={require('../assets/shoppingBag.png')} />
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -116,12 +135,28 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        bottom: 10,
+        bottom: 70,
         right: 10,
     },
     overlayImage: {
         width: 30,
         height: 30,
+    },
+    textContainer: {
+        marginTop: 10,
+    },
+    titleText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    descriptionText: {
+        fontSize: 12,
+        
+    },
+    priceText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'green',
     },
 });
 
