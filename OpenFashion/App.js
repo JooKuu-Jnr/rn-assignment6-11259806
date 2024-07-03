@@ -12,7 +12,7 @@ const App = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home"  screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Home">
                     {props => <HomePage {...props} cart={cart} setCart={setCart} />}
                 </Stack.Screen>

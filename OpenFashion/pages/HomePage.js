@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomePage = ({ navigation, cart, setCart }) => {
     const data = [
@@ -13,8 +14,34 @@ const HomePage = ({ navigation, cart, setCart }) => {
         { id: '8', image: require('../assets/dress3.png'), title: 'lame', description: 'reversible angora cardigan', price: '$120' },
     ];
 
-    const addToCart = (item) => {
-        setCart([...cart, item]);
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const savedCart = await AsyncStorage.getItem('cart');
+                if (savedCart) {
+                    setCart(JSON.parse(savedCart));
+                }
+            } catch (error) {
+                console.error("Failed to load cart from local storage:", error);
+            }
+        };
+
+        fetchCart();
+    }, []);
+
+    const addToCart = async (item) => {
+        try {
+            const itemExists = cart.find(cartItem => cartItem.id === item.id);
+            if (!itemExists) {
+                const newCart = [...cart, item];
+                setCart(newCart);
+                await AsyncStorage.setItem('cart', JSON.stringify(newCart));
+            } else {
+                console.log("Item is already in the cart");
+            }
+        } catch (error) {
+            console.error("Failed to save cart to local storage:", error);
+        }
     };
 
     const renderItem = ({ item }) => {
@@ -98,13 +125,13 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 32,
-        fontWeight: '600',
+        fontWeight: '400',
     },
     circle: {
         width: 30,
         height: 30,
         borderRadius: 20,
-        backgroundColor: 'grey',
+        backgroundColor: '#D3D3D3',
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 'auto',
@@ -113,7 +140,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 20,
-        backgroundColor: 'grey',
+        backgroundColor: '#D3D3D3',
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 14,
@@ -151,12 +178,11 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         fontSize: 12,
-        
     },
     priceText: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: 'green',
+        color: '#DAA06D',
     },
 });
 
